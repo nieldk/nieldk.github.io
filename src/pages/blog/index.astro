@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+
+const allPosts = await getCollection("posts");
+const dateOptions: object = {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+};
+---
+
+<Layout title="Sec1 Security Blog">
+    <div class="flex items-center justify-between w-full">
+        <a href="/" class="bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 p-2 m-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </a>
+        <div class="flex-grow text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4">Sec1 Security Blog</h1>
+        </div>
+    </div>
+    <ul class="grid grid-cols-1 md:grid-cols-2">
+        {
+            allPosts.map((post) => (
+                <li class="m-2">
+                    <a href={`/blog/${post.slug}`}>
+                        <Card class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+                            <div class="md:flex">
+                                <div class="p-8">
+                                    <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Published on {new Date(post.data.pubDate).toLocaleDateString("en-DE", dateOptions)}</div>
+                                    <p class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">{post.data.title}</p>
+                                    <p class="mt-2 text-gray-500">{post.data.description}</p>
+                                    <div class="mt-4">
+                                        <a href={`/blog/authors/${post.data.author}`} class="text-gray-700 hover:underline">Author: {post.data.author}</a>
+                                    </div>
+                                    <div class="mt-4">
+                                        {post.data.tags.map(tag => (
+                                            <a href={`/blog/tags/${tag}`} class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-300">{tag}</a>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    </a>   
+                </li>
+            ))
+        }
+    </ul>
+    <div class="m-5 justify-center object-center flex">
+        <a href="/blog/tags" class="bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 p-2 m-2">View all tags</a>
+        <a href="/blog/authors" class="bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 p-2 m-2">View all authors</a>
+    </div>
+</Layout>

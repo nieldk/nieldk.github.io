@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/Layout.astro";
+import Card from "../../../components/Card.astro";
+
+const allPosts = await getCollection("posts");
+const uniqueAuthors = [
+        ...new Set(allPosts.map((post) => post.data.author).flat()),
+];
+---
+
+<Layout title="Sec1 Security Blog - All Authors">
+    <div class="flex items-center justify-between w-full">
+        <a href="/blog" class="bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 p-2 m-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </a>
+        <div class="flex-grow text-center">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">All Authors</h1>
+        </div>
+    </div>
+    <ul class="grid grid-cols-1 md:grid-cols-3">
+        {
+            uniqueAuthors.map((author) => (
+                <li class="m-2">
+                    <a href={`/blog/authors/${author}`}>
+                        <Card class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+                            <div class="md:flex">
+                                <div class="p-8">
+                                    <p class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">{author}</p>
+                                </div>
+                            </div>
+                        </Card>
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+</Layout>

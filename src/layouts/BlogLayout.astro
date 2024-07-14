@@ -1,0 +1,70 @@
+---
+import Card from "../components/Card.astro";
+import Layout from "./Layout.astro";
+const { frontmatter } = Astro.props;
+const dateOptions: object = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+};
+---
+
+<Layout title={frontmatter.title}>
+    <div class="flex items-center justify-between w-full">
+        <a href="/blog" class="bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 p-2 m-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+        </a>
+    </div>
+    <div class="mx-auto mb-5 max-w-screen-xl">
+        <Card>
+            <div class="md:flex">
+                <div class="p-8">
+                    <div
+                        class="uppercase tracking-wide text-sm text-indigo-500 font-semibold"
+                    >
+                        Published on {
+                            new Date(frontmatter.pubDate).toLocaleDateString(
+                                "en-DE",
+                                dateOptions,
+                            )
+                        }
+                    </div>
+                    <p
+                        class="block mt-1 text-lg leading-tight font-medium text-black"
+                    >
+                        {frontmatter.title}
+                    </p>
+                    <p class="mt-2 text-gray-500">{frontmatter.description}</p>
+                    <div class="mt-4">
+                        <a
+                            href={`/blog/authors/${frontmatter.author}`}
+                            class="text-gray-700 hover:underline"
+                            >Author: {frontmatter.author}</a
+                        >
+                    </div>
+                    <div class="mt-4">
+                        {
+                            frontmatter.tags.map((tag: any) => (
+                                <a
+                                    href={`/blog/tags/${tag}`}
+                                    class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 hover:bg-gray-300"
+                                >
+                                    {tag}
+                                </a>
+                            ))
+                        }
+                    </div>
+                </div>
+            </div>
+        </Card>
+    </div>
+    <div
+        class="mx-auto prose flex-wrap text-wrap break-words max-w-screen-xl"
+    >
+        <Card>
+            <slot />
+        </Card>
+    </div>
+</Layout>
