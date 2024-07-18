@@ -1,12 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import banner from '/src/assets/banner.png';
 ---
 
 <Layout title="Sec1 Security">
 	<main class="bg-gray-100">
 		<div class="bg-black py-4">
-			<img src="/src/assets/banner.png" class="mx-auto max-w-full" alt="Banner">
+			<img src={banner.src} class="mx-auto max-w-full" alt="Banner">
 		</div>
 		<div class="container mx-auto py-8">
 			<h1 class="text-3xl font-bold mb-4">Enhanced Security Solutions at Your Service</h1>
